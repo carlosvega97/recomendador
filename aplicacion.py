@@ -93,3 +93,4 @@ indice_guion = resultados.index("-")
 noticia_resultado = resultados[:indice_guion]
 noticia_resultado = open(noticia_resultado, "r", encoding="utf8")
 st.text_area("Noticia", noticia_resultado.read())
+
