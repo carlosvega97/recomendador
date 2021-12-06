@@ -48,7 +48,7 @@ lista_tecnologia_pais = lista_urls_pais("https://elpais.com/tecnologia/")
 lista_salud_pais = lista_urls_pais("https://elpais.com/noticias/salud/")
 
 lista_salud_20minutos = lista_urls_20minutos("https://www.20minutos.es/salud/")
-#lista_ciencia_20minutos = lista_urls_20minutos("https://www.20minutos.es/ciencia/")
+lista_ciencia_20minutos = lista_urls_20minutos("https://www.20minutos.es/ciencia/")
 lista_tecnologia_20minutos = lista_urls_20minutos("https://www.20minutos.es/tecnologia/")
 
 lista_ciencia_elmundo = lista_urls_elmundo("https://www.elmundo.es/ciencia-y-salud/ciencia.html")
@@ -154,7 +154,7 @@ guardar_noticias_pais(lista_ciencia_pais, "Ciencia")
 guardar_noticias_pais(lista_salud_pais, "Salud")
 
 guardar_noticias_20minutos(lista_tecnologia_20minutos, "Tecnologia")
-#guardar_noticias_20minutos(lista_ciencia_20minutos, "_ciencia_20minutos_")
+guardar_noticias_20minutos(lista_ciencia_20minutos, "Ciencia")
 guardar_noticias_20minutos(lista_salud_20minutos, "Salud")
 
 guardar_noticias_mundo(lista_tecnologia_elmundo, "Tecnologia")

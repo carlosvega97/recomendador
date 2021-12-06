@@ -77,14 +77,12 @@ col1, col2, col3 = st.columns(3)
 with col1:
     n = st.selectbox("N Resultados: ", ["5", "7", "10"])
 
-col1, col2, col3 = st.columns(3)
-with col2:
-    st.write("")
-    buscar = st.button("Buscar")
+st.write("")
+
 
 medio = st.selectbox("Filtro: ", ["Todas", "El Pais", "El Mundo", "20 Minutos"])
 
-#if buscar:
+
 lista_noticias = busqueda(medio)
 res = guardar_resultados(noticia, lista_noticias)
 lista_resultados = mostrar_resultados(res)
