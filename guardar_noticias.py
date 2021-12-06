@@ -66,6 +66,9 @@ def guardar_noticias_pais(lista_urls, tipo):
             tags = web.find('meta', property="news_keywords").attrs['content']
             titulo = web.find('h1', class_="a_t").text
             entradilla = web.find('h2', class_="a_st").text
+            #fecha = web.find(id="article_date_p").get('data-date')
+            #indice = fecha.index("T")
+            #fecha = fecha[:indice]
             cuerpo = ""
             
             for para in web.find_all("p", class_=""):

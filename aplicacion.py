@@ -36,7 +36,7 @@ def simlitud_dice(etiquetas_texto1, etiquetas_texto2):
 def mostrar_noticias(medio, categoria):
     lista = []
     for elemento in os.scandir("Noticias/" + medio + "/" + categoria + "/"):        # Escanear la carpeta del medio y categoria seleccionadas, devolver todo el contenido
-        lista.append(elemento.path)
+        lista.append(elemento.path)                                                 # Guardar las rutas de todos los ficheros de las carpetas, (DirEntry.path)
     return lista                                                                    # Devolver lista con todas las rutas de todos los ficheros de la carpeta
 
 def rastrear_directorio(medio): 
@@ -59,36 +59,47 @@ def busqueda(filtro):
     return lista
 
 #----------------------------------------------- Interfaz Aplicacion ------------------------------------
-st.title("Seleccione una noticia de referencia")
+paginas = {
+  "pagina1": "Busquedas de Texto",
+  "pagina2": "Recomendaciones Noticias"
+}
 
-col1,col2,col3 = st.columns(3)
+pagina_selec = st.sidebar.radio("Selecciona la página", paginas.values())
 
-with col1:
-    medio = st.selectbox("Medio", ["El Pais", "El Mundo", "20 Minutos"])
-with col2:
-    categoria = st.selectbox("Categoria", ["Tecnologia", "Ciencia", "Salud"])
-with col3:
-    noticia = st.selectbox("Noticia", mostrar_noticias(medio, categoria))
+if pagina_selec == paginas["pagina1"]:
+    st.title("Busqueda de Noticias")
 
-texto_noticia = open(noticia, "r", encoding="utf8")
-st.text_area("Preview Noticia", texto_noticia.read())
+elif pagina_selec == paginas["pagina2"]:
+    st.title("Recomendación de Noticias")
+    st.write("Seleccione una noticia de referencia: ")
 
-col1, col2, col3 = st.columns(3)
-with col1:
-    n = st.selectbox("N Resultados: ", ["5", "7", "10"])
+    col1,col2,col3 = st.columns(3)
 
-st.write("")
+    with col1:
+        medio = st.selectbox("Medio", ["El Pais", "El Mundo", "20 Minutos"])
+    with col2:
+        categoria = st.selectbox("Categoria", ["Tecnologia", "Ciencia", "Salud"])
+    with col3:
+        noticia = st.selectbox("Noticia", mostrar_noticias(medio, categoria))
+
+    texto_noticia = open(noticia, "r", encoding="utf8")
+    st.text_area("Preview Noticia", texto_noticia.read())
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        n = st.selectbox("N Resultados: ", ["5", "7", "10"])
+
+    st.write("")
 
 
-medio = st.selectbox("Filtro: ", ["Todas", "El Pais", "El Mundo", "20 Minutos"])
+    medio = st.selectbox("Filtro: ", ["Todas", "El Pais", "El Mundo", "20 Minutos"])
 
 
-lista_noticias = busqueda(medio)
-res = guardar_resultados(noticia, lista_noticias)
-lista_resultados = mostrar_resultados(res)
-resultados = st.selectbox("Ranking: ", lista_resultados[:int(n)])
-indice_guion = resultados.index("-")
-noticia_resultado = resultados[:indice_guion]
-noticia_resultado = open(noticia_resultado, "r", encoding="utf8")
-st.text_area("Noticia", noticia_resultado.read())
-
+    lista_noticias = busqueda(medio)
+    res = guardar_resultados(noticia, lista_noticias)
+    lista_resultados = mostrar_resultados(res)
+    resultados = st.selectbox("Ranking: ", lista_resultados[:int(n)])
+    indice_guion = resultados.index("-")
+    noticia_resultado = resultados[:indice_guion]
+    noticia_resultado = open(noticia_resultado, "r", encoding="utf8")
+    st.text_area("Noticia", noticia_resultado.read())
