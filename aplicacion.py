@@ -71,6 +71,10 @@ def tokenizar_texto(ruta_noticia):
     lista_tokens = word_tokenize(texto.read().lower(), language="spanish")
     return lista_tokens
 
+def tokenizar_busqueda(busqueda: str):
+    lista_tokens = word_tokenize(busqueda.lower(), language="spanish")
+    return lista_tokens
+
 
 def limpiar_texto(lista_tokens: list):
     palabras = []
@@ -99,6 +103,7 @@ def generar_coleccion(lista_textos):
         coleccion.append(texto)
     return coleccion
 
+
 def crear_vectores(coleccion_documentos: list, nombres_ficheros: list):
     tf = TfidfVectorizer()
     vector_idf = tf.fit_transform(coleccion_documentos).toarray() 
@@ -115,73 +120,84 @@ def visualizar_resultados(serie: pd.Series):
     return resultados
 
 #----------------------------------------------- Interfaz Aplicacion ------------------------------------
-paginas = {
-  "pagina1": "Busquedas de Texto",
-  "pagina2": "Noticias Similares/Recomendaciones Noticias"
-}
+def main():
+    paginas = {
+    "pagina1": "Busquedas de Texto",
+    "pagina2": "Noticias Similares/Recomendaciones Noticias"
+    }
 
-pagina_selec = st.sidebar.radio("Selecciona la página", paginas.values())
+    pagina_selec = st.sidebar.radio("Selecciona la página", paginas.values())
 
-if pagina_selec == paginas["pagina1"]:
-    st.title("Busqueda de Noticias")
-    st.text_input("Consulta: ", placeholder="Texto a buscar")
+    if pagina_selec == paginas["pagina1"]:
+        st.title("Busqueda de Noticias")
+        consulta = st.text_input("Consulta: ", placeholder="Texto a buscar")
 
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        n = st.selectbox("N Resultados: ", ["5", "7", "10"])
-    with col2:
-        medio = st.selectbox("Filtro: ", ["Todas", "El Pais", "El Mundo", "20 Minutos"])
-    with col3:
-        st.write("Buscar:")
-        buscar = st.button("Buscar")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            n = st.selectbox("N Resultados: ", ["5", "7", "10"])
+        with col2:
+            medio = st.selectbox("Filtro: ", ["Todas", "El Pais", "El Mundo", "20 Minutos"])
+        with col3:
+            st.write("Buscar:")
+            buscar = st.button("Buscar")
+        if buscar:
+            textos = busqueda(medio)
+            lista_tokens_busqueda = tokenizar_busqueda(consulta)
+            texto_limpio = limpiar_texto(lista_tokens_busqueda)
+            query = stemming(texto_limpio)
+            coleccion = generar_coleccion(textos)
+            coleccion.append(query)
 
-elif pagina_selec == paginas["pagina2"]:
-    st.title("Noticias Similares/Recomendación de Noticias")
-    st.write("Seleccione una noticia de referencia: ")
 
-    col1,col2,col3 = st.columns(3)
 
-    with col1:
-        medio = st.selectbox("Medio", ["El Pais", "El Mundo", "20 Minutos"])
-    with col2:
-        categoria = st.selectbox("Categoria", ["Tecnologia", "Ciencia", "Salud"])
-    with col3:
-        noticia = st.selectbox("Noticia", mostrar_noticias(medio, categoria))
+    elif pagina_selec == paginas["pagina2"]:
+        st.title("Noticias Similares/Recomendación de Noticias")
+        st.write("Seleccione una noticia de referencia: ")
 
-    texto_noticia = open(noticia, "r", encoding="utf8")
-    st.text_area("Preview Noticia", texto_noticia.read())
+        col1,col2,col3 = st.columns(3)
 
-    col1, col2, col3 = st.columns(3)
-    with col2:
-        n = st.selectbox("N Resultados: ", ["5", "7", "10"])
+        with col1:
+            medio = st.selectbox("Medio", ["El Pais", "El Mundo", "20 Minutos"])
+        with col2:
+            categoria = st.selectbox("Categoria", ["Tecnologia", "Ciencia", "Salud"])
+        with col3:
+            noticia = st.selectbox("Noticia", mostrar_noticias(medio, categoria))
 
-    st.write("")
+        texto_noticia = open(noticia, "r", encoding="utf8")
+        st.text_area("Preview Noticia", texto_noticia.read())
 
-    col1,col2,col3 = st.columns(3)
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            medio = st.selectbox("Filtro: ", ["Todas", "El Pais", "El Mundo", "20 Minutos"])
+        with col2:
+            n = st.selectbox("N Resultados: ", ["5", "7", "10"])
+        with col3:
+            st.write("Seleccione una opcion: ")
+            recomenadciones = st.checkbox("Noticas recomendadas")
+            comparaciones = st.checkbox("Noticias Similares")
 
-    with col1:
-        medio = st.selectbox("Filtro: ", ["Todas", "El Pais", "El Mundo", "20 Minutos"])
-    with col3:
-        recomenadciones = st.checkbox("Noticas recomendadas")
-        comparaciones = st.checkbox("Noticias Similares")
-    
-    if recomenadciones:
-        lista_noticias = busqueda(medio)
-        res = guardar_resultados(noticia, lista_noticias)
-        lista_resultados = mostrar_resultados(res)
-        resultados = st.selectbox("Ranking: ", lista_resultados[:int(n)])
-        indice_guion = resultados.index("-")
-        noticia_resultado = resultados[:indice_guion]
-        noticia_resultado = open(noticia_resultado, "r", encoding="utf8")
-        st.text_area("Noticia", noticia_resultado.read())
-    if comparaciones: 
-        lista_textos = busqueda(medio)
-        lista_textos.append(noticia)
-        coleccion = generar_coleccion(lista_textos)
-        noticia_refencia = crear_vectores(coleccion, lista_textos)
-        lista_similitudes = visualizar_resultados(noticia_refencia)
-        ranking = st.selectbox("Ranking: ", lista_similitudes[:int(n)])
-        indice_guion = ranking.index("-")
-        noticia_resultado = ranking[:indice_guion]
-        noticia_resultado = open(noticia_resultado, "r", encoding="utf8")
-        st.text_area("Noticia", noticia_resultado.read())
+        st.write("")
+        
+        if recomenadciones:
+            lista_noticias = busqueda(medio)
+            res = guardar_resultados(noticia, lista_noticias)
+            lista_resultados = mostrar_resultados(res)
+            resultados = st.selectbox("Ranking: ", lista_resultados[:int(n)])
+            indice_guion = resultados.index("-")
+            noticia_resultado = resultados[:indice_guion]
+            noticia_resultado = open(noticia_resultado, "r", encoding="utf8")
+            st.text_area("Noticia", noticia_resultado.read())
+        if comparaciones: 
+            lista_textos = busqueda(medio)
+            lista_textos.append(noticia)
+            coleccion = generar_coleccion(lista_textos)
+            noticia_refencia = crear_vectores(coleccion, lista_textos)
+            lista_similitudes = visualizar_resultados(noticia_refencia)
+            ranking = st.selectbox("Ranking: ", lista_similitudes[:int(n)])
+            indice_guion = ranking.index("-")
+            noticia_resultado = ranking[:indice_guion]
+            noticia_resultado = open(noticia_resultado, "r", encoding="utf8")
+            st.text_area("Noticia", noticia_resultado.read())
+
+main()
