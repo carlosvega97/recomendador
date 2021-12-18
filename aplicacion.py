@@ -10,7 +10,6 @@ from nltk.stem.snowball import SpanishStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 nltk.download('punkt')
-nltk.download('stopwords')
 
 #------------------------------------------ Funciones ----------------------------------------------------
 def extraer_etiquetas(ruta_noticia):
