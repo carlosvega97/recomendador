@@ -1,3 +1,4 @@
+import re
 import streamlit as st
 import os
 import pandas as pd
@@ -140,7 +141,7 @@ def main():
             medio = st.selectbox("Filtro: ", ["Todas", "El Pais", "El Mundo", "20 Minutos"])
         with col3:
             st.write("Buscar:")
-            buscar = st.button("Buscar")
+            buscar = st.checkbox("Buscar")
         if buscar:
             textos = busqueda(medio)
             lista_tokens_busqueda = tokenizar_busqueda(consulta)
@@ -148,8 +149,14 @@ def main():
             query = stemming(texto_limpio)
             coleccion = generar_coleccion(textos)
             coleccion.append(query)
-
-
+            textos.append(consulta)
+            similares_consulta = crear_vectores(coleccion, textos)
+            resultados = visualizar_resultados(similares_consulta)
+            ranking = st.selectbox("Ranking: ", resultados[1:int(n)])
+            indice_guion = ranking.index("-")
+            noticia_resultado = ranking[:indice_guion]
+            noticia_resultado = open(noticia_resultado, "r", encoding="utf8")
+            st.text_area("Noticia", noticia_resultado.read())
 
     elif pagina_selec == paginas["pagina2"]:
         st.title("Noticias Similares/Recomendación de Noticias")
@@ -174,13 +181,11 @@ def main():
         with col2:
             n = st.selectbox("N Resultados: ", ["5", "7", "10"])
         with col3:
-            st.write("Seleccione una opcion: ")
-            recomenadciones = st.checkbox("Noticas recomendadas")
-            comparaciones = st.checkbox("Noticias Similares")
+            opcion = st.radio("Seleccione una opcion", ["Noticias Recomendadas", "Noticias Similares"])
 
         st.write("")
         
-        if recomenadciones:
+        if opcion == "Noticias Recomendadas":
             lista_noticias = busqueda(medio)
             res = guardar_resultados(noticia, lista_noticias)
             lista_resultados = mostrar_resultados(res)
@@ -189,7 +194,7 @@ def main():
             noticia_resultado = resultados[:indice_guion]
             noticia_resultado = open(noticia_resultado, "r", encoding="utf8")
             st.text_area("Noticia", noticia_resultado.read())
-        if comparaciones: 
+        elif opcion == "Noticias Similares": 
             lista_textos = busqueda(medio)
             lista_textos.append(noticia)
             coleccion = generar_coleccion(lista_textos)
@@ -202,9 +207,3 @@ def main():
             st.text_area("Noticia", noticia_resultado.read())
 
 main()
-
-fichero_parada = open("Lista_Stop_Words.txt", "r", encoding="utf8")
-lista_parada = fichero_parada.read().split("\n")
-puntuacion = list(string.punctuation)
-lista_parada += puntuacion
-print("Lista parada completa: ", lista_parada)
