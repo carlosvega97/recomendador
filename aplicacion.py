@@ -150,7 +150,7 @@ def main():
             textos.append(consulta)
             similares_consulta = crear_vectores(coleccion, textos)
             resultados = visualizar_resultados(similares_consulta)
-            ranking = st.selectbox("Ranking: ", resultados[1:int(n)])
+            ranking = st.selectbox("Ranking: ", resultados[1:int(n) + 1])
             indice_guion = ranking.index("-")
             noticia_resultado = ranking[:indice_guion]
             noticia_resultado = open(noticia_resultado, "r", encoding="utf8")
