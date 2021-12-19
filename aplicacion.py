@@ -42,13 +42,13 @@ def simlitud_dice(etiquetas_texto1, etiquetas_texto2):
 
 def mostrar_noticias(medio, categoria):
     lista = []
-    for elemento in os.scandir("Noticias/" + medio + "/" + categoria + "/"):        # Escanear la carpeta del medio y categoria seleccionadas, devolver todo el contenido
+    for elemento in os.scandir("Codigo/Noticias/" + medio + "/" + categoria + "/"):        # Escanear la carpeta del medio y categoria seleccionadas, devolver todo el contenido
         lista.append(elemento.path)                                                 # Guardar las rutas de todos los ficheros de las carpetas, (DirEntry.path)
     return lista                                                                    # Devolver lista con todas las rutas de todos los ficheros de la carpeta
 
 def rastrear_directorio(medio): 
     lista_noticias = []
-    for item in os.scandir("Noticias/" + medio):
+    for item in os.scandir("Codigo/Noticias/" + medio):
         carpeta = os.scandir(item)
         for fichero in carpeta:
             lista_noticias.append(fichero.path)
