@@ -77,7 +77,7 @@ def tokenizar_busqueda(busqueda: str):
 
 def limpiar_texto(lista_tokens: list):
     palabras = []
-    fichero_parada = open("Lista_Stop_Words.txt", "r", encoding="utf8")
+    fichero_parada = open("Codigo/Lista_Stop_Words.txt", "r", encoding="utf8")
     lista_parada = fichero_parada.read().split("\n")
     puntuacion = list(string.punctuation)
     lista_parada += puntuacion
