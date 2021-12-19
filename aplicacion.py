@@ -1,4 +1,3 @@
-import re
 import streamlit as st
 import os
 import pandas as pd
@@ -6,7 +5,7 @@ import operator
 import nltk
 from nltk.tokenize import word_tokenize
 import string
-from nltk.stem.snowball import SpanishStemmer
+import Stemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 nltk.download('punkt')
@@ -89,9 +88,9 @@ def limpiar_texto(lista_tokens: list):
 
 def stemming(lista_palabras: list):
     texto = ""
-    stemmer = SpanishStemmer()
+    stemmer = Stemmer.Stemmer('spanish')
     for palabra in lista_palabras:
-        s = stemmer.stem(palabra)
+        s = stemmer.stemWord(palabra)
         texto = texto + " " + s
     return texto
 
