@@ -85,7 +85,7 @@ def guardar_noticias_pais(lista_urls, tipo):
             entradilla = "" 
         
         noticia = titulo + "\n######\n" + entradilla + "\n######\n" + cuerpo + "\n######\n" + tags 
-        directory = "Noticias/El Pais/" + tipo + "/"
+        directory = "Codigo/Noticias/El Pais/" + tipo + "/"
         file = open(str(directory) + tipo + "." + datetime.today().strftime('%Y-%m-%d') + "." + "{:03d}".format(index) + ".txt", "w", encoding="utf-8")
         file.write(noticia)
         file.close()
@@ -113,7 +113,7 @@ def guardar_noticias_20minutos(lista_urls, tipo):
             entradilla = "" 
         
         noticia = titulo + "\n######\n" + entradilla + "\n######\n" + cuerpo + "\n######\n" + tags  
-        directory = "Noticias/20 Minutos/" + tipo + "/"
+        directory = "Codigo/Noticias/20 Minutos/" + tipo + "/"
         file = open(str(directory) + tipo + "." + datetime.today().strftime('%Y-%m-%d') + "." + "{:03d}".format(index) + ".txt", "w", encoding="utf-8")
         file.write(noticia)
         file.close()
@@ -151,7 +151,7 @@ def guardar_noticias_mundo(lista_urls, tipo):
             cuerpo = cuerpo + para.get_text()                      
 
         noticia = titulo + "\n######\n" + entradilla + "\n######\n" + cuerpo + "\n######\n" + etiquetas  
-        directory = "Noticias/El Mundo/" + tipo + "/"
+        directory = "Codigo/Noticias/El Mundo/" + tipo + "/"
         file = open(str(directory) + tipo + "." + datetime.today().strftime('%Y-%m-%d') + "." + "{:03d}".format(index) + ".txt", "w", encoding="utf-8")
         file.write(noticia)
         file.close()
@@ -159,16 +159,16 @@ def guardar_noticias_mundo(lista_urls, tipo):
         
 #Llamada a los metodos que guardan las noticias
 
-guardar_noticias_pais(lista_tecnologia_pais, "tecnologia")
-guardar_noticias_pais(lista_ciencia_pais, "ciencia")
-guardar_noticias_pais(lista_salud_pais, "salud")
+guardar_noticias_pais(lista_tecnologia_pais, "Tecnologia")
+guardar_noticias_pais(lista_ciencia_pais, "Ciencia")
+guardar_noticias_pais(lista_salud_pais, "Salud")
 
-guardar_noticias_20minutos(lista_tecnologia_20minutos, "tecnologia")
-guardar_noticias_20minutos(lista_ciencia_20minutos, "ciencia")
-guardar_noticias_20minutos(lista_salud_20minutos, "salud")
+guardar_noticias_20minutos(lista_tecnologia_20minutos, "Tecnologia")
+guardar_noticias_20minutos(lista_ciencia_20minutos, "Ciencia")
+guardar_noticias_20minutos(lista_salud_20minutos, "Salud")
 
-guardar_noticias_mundo(lista_tecnologia_elmundo, "tecnologia")
-guardar_noticias_mundo(lista_ciencia_elmundo, "ciencia")
-guardar_noticias_mundo(lista_salud_elmundo, "salud")
+guardar_noticias_mundo(lista_tecnologia_elmundo, "Tecnologia")
+guardar_noticias_mundo(lista_ciencia_elmundo, "Ciencia")
+guardar_noticias_mundo(lista_salud_elmundo, "Salud")
  
  

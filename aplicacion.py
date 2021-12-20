@@ -151,10 +151,10 @@ def main():
             similares_consulta = crear_vectores(coleccion, textos)
             resultados = visualizar_resultados(similares_consulta)
             ranking = st.selectbox("Ranking: ", resultados[1:int(n) + 1])
-            indice_guion = ranking.index("-")
+            indice_guion = ranking.rfind("-")
             noticia_resultado = ranking[:indice_guion]
             noticia_resultado = open(noticia_resultado, "r", encoding="utf8")
-            st.text_area("Noticia", noticia_resultado.read())
+            st.text_area("Noticia", noticia_resultado.read(), height=200)
 
     elif pagina_selec == paginas["pagina2"]:
         st.title("Noticias Similares/Recomendación de Noticias")
@@ -170,7 +170,7 @@ def main():
             noticia = st.selectbox("Noticia", mostrar_noticias(medio, categoria))
 
         texto_noticia = open(noticia, "r", encoding="utf8")
-        st.text_area("Preview Noticia", texto_noticia.read())
+        st.text_area("Preview Noticia", texto_noticia.read(), height=200)
 
         col1, col2, col3 = st.columns(3)
         
@@ -188,10 +188,10 @@ def main():
             res = guardar_resultados(noticia, lista_noticias)
             lista_resultados = mostrar_resultados(res)
             resultados = st.selectbox("Ranking: ", lista_resultados[:int(n)])
-            indice_guion = resultados.index("-")
+            indice_guion = resultados.rfind("-")
             noticia_resultado = resultados[:indice_guion]
             noticia_resultado = open(noticia_resultado, "r", encoding="utf8")
-            st.text_area("Noticia", noticia_resultado.read())
+            st.text_area("Noticia", noticia_resultado.read(), height=200)
         elif opcion == "Noticias Similares": 
             lista_textos = busqueda(medio)
             lista_textos.append(noticia)
@@ -199,8 +199,8 @@ def main():
             noticia_refencia = crear_vectores(coleccion, lista_textos)
             lista_similitudes = visualizar_resultados(noticia_refencia)
             ranking = st.selectbox("Ranking: ", lista_similitudes[:int(n)])
-            indice_guion = ranking.index("-")
+            indice_guion = ranking.rfind("-")
             noticia_resultado = ranking[:indice_guion]
             noticia_resultado = open(noticia_resultado, "r", encoding="utf8")
-            st.text_area("Noticia", noticia_resultado.read())
+            st.text_area("Noticia", noticia_resultado.read(), height=200)
 main()
