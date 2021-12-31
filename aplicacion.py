@@ -2,13 +2,11 @@ import streamlit as st
 import os
 import pandas as pd
 import operator
-import nltk
 from nltk.tokenize import word_tokenize
 import string
 import Stemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-nltk.download('punkt')
 
 #------------------------------------------ Funciones ----------------------------------------------------
 def extraer_etiquetas(ruta_noticia):
