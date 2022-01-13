@@ -127,7 +127,7 @@ def main():
     pagina_selec = st.sidebar.radio("Selecciona la página", paginas.values())
 
     if pagina_selec == paginas["pagina1"]:
-        st.title("Busqueda de Noticias")
+        st.title("Búsqueda de Noticias")
         consulta = st.text_input("Consulta: ", placeholder="Texto a buscar")
 
         col1, col2, col3 = st.columns(3)
