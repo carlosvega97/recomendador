@@ -20,7 +20,7 @@ def guardar_resultados(noticia_referencia, lista):
     etiquetas_noticia = extraer_etiquetas(noticia_referencia)
     for noticia in lista:
         lista_etiquetas = extraer_etiquetas(noticia)
-        res[noticia] = simlitud_dice(etiquetas_noticia, lista_etiquetas)
+        res[noticia] = similitud_dice(etiquetas_noticia, lista_etiquetas)
     return res
 
 def mostrar_resultados(diccionario: dict):
@@ -32,7 +32,7 @@ def mostrar_resultados(diccionario: dict):
     return lista_ranking
 
 
-def simlitud_dice(etiquetas_texto1, etiquetas_texto2):
+def similitud_dice(etiquetas_texto1, etiquetas_texto2):
     a = set(etiquetas_texto1)
     b = set(etiquetas_texto2)
 
